@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <!-- css -->
+</header>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <h1>FunctionList</h1>
+            <hr>
+        </div>
+        <div id="mainbody">
+            <ul  id="contents">list
+                <li v-for="(content, index) in contents">{{ content.name}}
+                    <function-button :path="content.path" :functionname="content.function"></function-button>
+                </li>
+            </ul>
+        </div>
+        <div id="functionbody" style="display:none;">
+            <h2></h2>
+            <div class="params-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <td v-for="paramHeader in paramHeaders">{{ paramHeader }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for:"param in params">
+                            <td v-for="(col, index) in params">{{ col }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <button type="button" class="back">back</button>
+                <div id="content-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.2.0.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/encoding.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+    var functionButton = Vue.extend({
+        props : ['path', 'functionname'],
+        template : '<button type="button" class="call" @click="echo">{{ functionname }}</button>',
+        methods : {
+            echo : function(){
+                var csv = convertCsvToObject(execSyncAjax(this.path));
+                if (csv) {
+                    // 書き換え処理
+                    functionBody.paramHeaders = getParamHeaderContents(csv[0]);
+                }
+            }
+        }
+    });
+    var functionBody = new Vue({
+        el : '#content-body',
+        data : {
+            paramHeaders : [],
+            params : [],
+        }
+    });
+    var contents = new Vue({
+        el : '#contents',
+        data : {
+            contents : ''
+        },
+        created : function(){
+            csvData = execSyncAjax('csv/functions.csv')
+            this.contents = convertCsvToObject(csvData);
+        },
+        components : {
+            'function-button' : functionButton
+        }
+    })
+        // $("button.call").on('click', function(){
+        //     $("#mainbody, #functionbody").toggle();
+        //     $("#content-body").load(app.callName);
+        // });
+        // $("button.back").on('click', function(){
+        //     $("#mainbody, #functionbody").toggle();
+        //     $("#content-body").empty();
+        // });
+
+
+        var header = [];
+
+    </script>
+</body>
+</html>
