@@ -1,9 +1,10 @@
 /**
  * Request/Responseに関係のあるカラム番号
  */
-const VALID_PARAMS_NUMBERS = [0,1,2,3,4];
+const VALID_PARAMS_NUMBERS = { 1:1, 2:2, 3:3, 4:4};
 const TYPE_COL_NAME = 'Type'
 const NAME_COL_NAME = 'name';
+const DESCRIPTION_COL_NAME = 'description';
 const REQUEST_TYPE_NAME = 'Request';
 const RESPONSE_TYPE_NAME = 'Response';
 const TITLE_TYPE_NAME = 'Title';
@@ -22,7 +23,6 @@ var inArray = function(array, param) {
 var convertCsvToObject = function(csvData) {
     var returnArray = [];
     var header = [];
-    csvData = convertToUtf8(csvData);
     var csvData = csvData.split("\n");
     csvData.pop();
     $.each(csvData, function(idx, row){
@@ -94,6 +94,8 @@ var getFunctionDetail = function(csvData) {
             responseArray.push(newRow);
         } else if (row[TYPE_COL_NAME] === TITLE_TYPE_NAME) {
             resultObject[TITLE_TYPE_NAME] = row[NAME_COL_NAME];
+        } else if (row[TYPE_COL_NAME] === DESCRIPTION_TYPE_NAME) {
+            descriptionArray.push(row[DESCRIPTION_COL_NAME]);
         }
     });
     resultObject[REQUEST_TYPE_NAME] = requestArray;
@@ -102,13 +104,6 @@ var getFunctionDetail = function(csvData) {
     return resultObject;
 
 }
-
-var convertToUtf8 = function(str) {
-    var str_array = str.split('');//1文字ずつ配列に入れる
-    var utf8Array = Encoding.convert(str_array, 'UTF8', 'AUTO');//UTF-8に変換
-    var convert = utf8Array.join('');//配列を文字列に戻す
-    return convert
-};
 
 /**
  * ajax通信 非同期

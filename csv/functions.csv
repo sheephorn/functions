@@ -1,3 +1,4 @@
 id,name,function,helth,path,ajdust
 1,first,next,3,params/first.csv,
 2,second,prev,4,params/second.csv,
+3,third,あ,5,params/third.csv,

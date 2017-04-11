@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
+<meta charset="utf-8">
 <header>
     <!-- css -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 </header>
 <body>
     <div id="wrapper">
@@ -9,31 +11,35 @@
             <h1>FunctionList</h1>
             <hr>
         </div>
-        <div id="mainbody" v-show="show">
+        <div id="mainbody" v-show="show" style="display:none;">
             <ul  id="contents">list
                 <li v-for="(content, index) in contents">{{ content.name}}
                     <function-button :path="content.path" :functionname="content.function"></function-button>
                 </li>
             </ul>
         </div>
-        <div id="functionbody" v-show="show">
+        <div id="functionbody" v-show="show" style="display:none;">
             <h2>{{ functionName }}</h2>
             <div class="params-table">
-                <table>
+                <table class="table table-condensed">
                     <thead>
                         <tr>
                             <td v-for="paramHeader in paramHeaders">{{ paramHeader }}</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="params in requestParams" class="row-request">
+                        <tr v-for="params in requestParams" class="row-request success">
                             <td v-for="(col, index) in params">{{ col }}</td>
                         </tr>
-                        <tr v-for="params in resuponseParams" class="row-response">
+                        <tr v-for="params in resuponseParams" class="row-response info">
                             <td v-for="(col, index) in params">{{ col }}</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <hr>
+            <div class="description">
+                <span v-for="description in descriptions">{{ description }}<br></span>
             </div>
             <div>
                 <button type="button" class="back">back</button>
@@ -43,8 +49,8 @@
         </div>
     </div>
     <script src="js/jquery-3.2.0.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="js/vue.js"></script>
-    <script src="js/encoding.min.js"></script>
     <script src="js/common.js"></script>
     <script>
     /**
@@ -52,7 +58,7 @@
      */
     var functionButton = Vue.extend({
         props : ['path', 'functionname'],
-        template : '<button type="button" class="call" @click="echo">{{ functionname }}</button>',
+        template : '<button type="button" class="btn btn-default" @click="echo">{{ functionname }}</button>',
         methods : {
             echo : function(){
                 var csv = convertCsvToObject(execSyncAjax(this.path));
@@ -63,6 +69,7 @@
                     functionBody.requestParams = functionData[REQUEST_TYPE_NAME];
                     functionBody.resuponseParams = functionData[RESPONSE_TYPE_NAME];
                     functionBody.functionName = functionData[TITLE_TYPE_NAME];
+                    functionBody.descriptions = functionData[DESCRIPTION_TYPE_NAME];
                     functionBody.show = !functionBody.show;
                     contents.show = !contents.show;
                 }
@@ -78,6 +85,7 @@
             paramHeaders : [],
             resuponseParams : [],
             requestParams : [],
+            descriptions : [],
             show : false,
             functionName : 'not yet'
         }
