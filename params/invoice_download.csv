@@ -1,0 +1,9 @@
+Type,name,type,need,description,class,adjust
+Title,請求書のpdf出力,,,,,
+Request,exportingOrderId,int,○,輸出id,,
+Response,,,,PDFファイル　請求書,,
+Description,,,,請求書を発行する。(wkhtml2pdf使用),strong,
+Description,,,,invoiceのステータスによりテンプレートを分けている,,
+Description,,,,種類はNeedConfirm、Approved(DuePayment)、Paid ,,
+Description,,,,バックエンドからは３つのステータスでダウンロードできるが,,
+Description,,,,フロントエンドからはNeedConfirmの場合制限を加えている,,

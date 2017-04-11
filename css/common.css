@@ -1,0 +1,24 @@
+body {
+    width:100%;
+    font-size: 1.2em;
+    margin:2em;
+}
+#wrapper {
+    width:100%;
+}
+input[type=text] {
+    width:10em;
+}
+span.strong {
+    font-weight: bold;
+}
+div.description {
+    margin:2em;
+}
+div.description span {
+    font-size: 1.5em;
+}
+div.params-table table thead {
+    font-size: 1.5em;
+    font-weight: bold;
+}

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
+<title>FunctionList</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <header>
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
 </header>
 <body>
     <div id="wrapper">
@@ -12,13 +15,52 @@
             <hr>
         </div>
         <div id="mainbody" v-show="show" style="display:none;">
-            <ul  id="contents">list
-                <li v-for="(content, index) in contents">{{ content.name}}
-                    <function-button :path="content.path" :functionname="content.function"></function-button>
-                </li>
-            </ul>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <td>Detail</td>
+                        <td>FunctionID</td>
+                        <td>Category1</td>
+                        <td>Category2</td>
+                        <td>Description</td>
+                        <td>URL</td>
+                        <td>WebControlelr</td>
+                        <td>AplController</td>
+                        <td>View</td>
+                        <td>JS</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="text" v-model="filterId"><br><button type="button" @click="clearFilter('filterId')">clear</button></td>
+                        <td><input type="text" v-model="filterCategory1"><br><button type="button" @click="clearFilter('filterCategory1')">clear</button></td>
+                        <td><input type="text" v-model="filterCategory2"><br><button type="button" @click="clearFilter('filterCategory2')">clear</button></td>
+                        <td><input type="text" v-model="filterDescription"><br><button type="button" @click="clearFilter('filterDescription')">clear</button></td>
+                        <td><input type="text" v-model="filterUrl"><br><button type="button" @click="clearFilter('filterUrl')">clear</button></td>
+                        <td><input type="text" v-model="filterWebController"><br><button type="button" @click="clearFilter('filterWebController')">clear</button></td>
+                        <td><input type="text" v-model="filterAplController"><br><button type="button" @click="clearFilter('filterAplController')">clear</button></td>
+                        <td><input type="text" v-model="filterView"><br><button type="button" @click="clearFilter('filterView')">clear</button></td>
+                        <td><input type="text" v-model="filterJs"><br><button type="button" @click="clearFilter('filterJs')">clear</button></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(content, index) in filteredContents">
+                        <td v-if="content.csvpath !== ''"><function-button :path="content.csvpath" :functionname="content.function"></function-button></td>
+                        <td v-else><button class="btn btn-default disabled">Detail</button></td>
+                        <td>{{ content.id }}</td>
+                        <td>{{ content.category1 }}</td>
+                        <td>{{ content.category2 }}</td>
+                        <td>{{ content.description }}</td>
+                        <td>{{ content.url }}</td>
+                        <td>{{ content.webcontroller }}</td>
+                        <td>{{ content.aplcontroller }}</td>
+                        <td>{{ content.view }}</td>
+                        <td>{{ content.js }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div id="functionbody" v-show="show" style="display:none;">
+            <button type="button" class="btn btn-primary back">Back</button>
             <h2>{{ functionName }}</h2>
             <div class="params-table">
                 <table class="table table-condensed">
@@ -39,10 +81,9 @@
             </div>
             <hr>
             <div class="description">
-                <span v-for="description in descriptions">{{ description }}<br></span>
+                <span v-for="description in descriptions" :class="description.class">{{ description.description }}<br></span>
             </div>
             <div>
-                <button type="button" class="back">back</button>
                 <div id="content-body">
                 </div>
             </div>
@@ -51,14 +92,15 @@
     <script src="js/jquery-3.2.0.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="js/vue.js"></script>
+    <script src="js/addclear.min.js"></script>
     <script src="js/common.js"></script>
     <script>
     /**
      * 関数ボタン　コンポーネント登録
      */
     var functionButton = Vue.extend({
-        props : ['path', 'functionname'],
-        template : '<button type="button" class="btn btn-default" @click="echo">{{ functionname }}</button>',
+        props : ['path'],
+        template : '<button type="button" class="btn btn-primary" @click="echo">Detail</button>',
         methods : {
             echo : function(){
                 var csv = convertCsvToObject(execSyncAjax(this.path));
@@ -96,17 +138,79 @@
     var contents = new Vue({
         el : '#mainbody',
         data : {
-            contents : '',
-            show : true
+            show : true,
+            // フィルター変数
+            filterId : '',
+            filterCategory1 : '',
+            filterCategory2 : '',
+            filterDescription : '',
+            filterUrl : '',
+            filterWebController : '',
+            filterAplController : '',
+            filterView : '',
+            filterJs : '',
         },
         created : function(){
-            csvData = execSyncAjax('csv/functions.csv')
-            this.contents = convertCsvToObject(csvData);
+            var csv = convertCsvToObject(execSyncAjax('csv/functions.csv'));
+            this.contents = csv;
+            this.filteredContents = csv;
         },
         components : {
             'function-button' : functionButton
+        },
+        watch : {
+            filterId : function(val) {
+                this.listFilter();
+            },
+            filterCategory1 : function(val) {
+                this.listFilter();
+            },
+            filterCategory2 : function(val) {
+                this.listFilter();
+            },
+            filterDescription : function(val) {
+                this.listFilter();
+            },
+            filterUrl : function(val) {
+                this.listFilter();
+            },
+            filterWebController : function(val) {
+                this.listFilter();
+            },
+            filterAplController : function(val) {
+                this.listFilter();
+            },
+            filterView : function(val) {
+                this.listFilter();
+            },
+            filterJs : function(val) {
+                this.listFilter();
+            },
+        },
+        methods : {
+            listFilter : function() {
+                var self = this;
+                this.filteredContents = this.contents.filter(function(content, idx, origin){
+                    var ret = true;
+                    if (String(content.id).toLowerCase().match(new RegExp(self.filterId.toLowerCase())) === null) ret = false;
+                    if (String(content.category1).toLowerCase().match(new RegExp(self.filterCategory1.toLowerCase())) === null) ret = false;
+                    if (String(content.category2).toLowerCase().match(new RegExp(self.filterCategory2.toLowerCase())) === null) ret = false;
+                    if (String(content.description).toLowerCase().match(new RegExp(self.filterDescription)) === null) ret = false;
+                    if (String(content.url).toLowerCase().match(new RegExp(self.filterUrl.toLowerCase())) === null) ret = false;
+                    if (String(content.webcontroller).toLowerCase().match(new RegExp(self.filterWebController.toLowerCase())) === null) ret = false;
+                    if (String(content.aplcontroller).toLowerCase().match(new RegExp(self.filterAplController.toLowerCase())) === null) ret = false;
+                    if (String(content.view).toLowerCase().match(new RegExp(self.filterView.toLowerCase())) === null) ret = false;
+                    if (String(content.js).toLowerCase().match(new RegExp(self.filterJs.toLowerCase())) === null) ret = false;
+                    return ret;
+                });
+            },
+            clearFilter : function(name) {
+                this[name] = '';
+            }
+
         }
-    })
+    });
+
     $("button.back").on("click", function(){
         functionBody.show = !functionBody.show;
         contents.show = !contents.show;
