@@ -12,6 +12,9 @@ input[type=text] {
 span.strong {
     font-weight: bold;
 }
+span.delete {
+    text-decoration:line-through;
+}
 div.description {
     margin:2em;
 }

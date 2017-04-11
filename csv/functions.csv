@@ -57,7 +57,7 @@ EXPORTING_ETA_LIST,B,,リスト表示,,BaseController@pass,ExportingController@g
 INVOICE_DETAIL,B,,,,BaseController@pass,InvoiceController@getDetail,invoice/detail,,,
 EXPORTING_UPDATE_VIN,B,,,,BaseController@pass,ExportingController@updateVin,exporting/update_vin,,,
 INVOICE_DOWNLOAD,F/B,,メインインボイスのダウンロード,params/invoice_download.csv,InvoiceController@downloadPdf,InvoiceController@getInvoiceDetail,invoice/download,,,
-INVOICE_REGIST,B,,,,InvoiceController@regist,InvoiceController@regist,invoice/regist,,,
+INVOICE_REGIST,B,,,params/invoice_regist.csv,InvoiceController@regist,InvoiceController@regist,invoice/regist,,,
 PIC_GET_FLAG,B,,,,PictureController@getFlag,ExportingPictureController@getFlag,pic/get_flag,,,
 INVOICE_UNSETTLE,B,,,,BaseController@pass,InvoiceController@unsettle,invoice/unsettle,,,
 SUB_INVOICE_DETAIL,B,,,,BaseController@pass,SubInvoiceController@getDetail,sub_invoice/detail,,,
