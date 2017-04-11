@@ -1,7 +1,13 @@
 /**
  * Request/Responseに関係のあるカラム番号
  */
-const vailParams = [0,1,2,3,4];
+const VALID_PARAMS_NUMBERS = [0,1,2,3,4];
+const TYPE_COL_NAME = 'Type'
+const NAME_COL_NAME = 'name';
+const REQUEST_TYPE_NAME = 'Request';
+const RESPONSE_TYPE_NAME = 'Response';
+const TITLE_TYPE_NAME = 'Title';
+const DESCRIPTION_TYPE_NAME = 'Description';
 
 var inArray = function(array, param) {
     return (array[param] !== undefined) ? true : false;
@@ -40,7 +46,7 @@ var getParamHeaderContents = function(csvData) {
     var resultArray = [];
     var count = 0;
     $.each(csvData, function(key, col){
-        if (inArray(vailParams, count)) {
+        if (inArray(VALID_PARAMS_NUMBERS, count)) {
             resultArray.push(key);
         } else {
             //
@@ -50,9 +56,53 @@ var getParamHeaderContents = function(csvData) {
     return resultArray;
 };
 
-var convertToObjectFromArray = function(array) {
+/**
+ * 関数詳細csvデータから各種類のパラメータを取り出し分類する
+ * @param  Array csvData 整形済みcsvデータ
+ * @return Object           分類済みデータ
+ */
+var getFunctionDetail = function(csvData) {
+    var resultObject = {};
+    var requestArray = [];
+    var responseArray = [];
+    var descriptionArray = [];
 
-};
+    $.each(csvData, function(idx, row){
+        if (row[TYPE_COL_NAME] === REQUEST_TYPE_NAME) {
+            var newRow = {};
+            var count = 0;
+            $.each(row, function(key, col){
+                if (inArray(VALID_PARAMS_NUMBERS, count)) {
+                    newRow[key] = col;
+                } else {
+                    //
+                }
+                count ++;
+            });
+            requestArray.push(newRow);
+        } else if (row[TYPE_COL_NAME] === RESPONSE_TYPE_NAME) {
+            var newRow = {};
+            var count = 0;
+            $.each(row, function(key, col){
+                if (inArray(VALID_PARAMS_NUMBERS, count)) {
+                    newRow[key] = col;
+                } else {
+                    //
+                }
+                count ++;
+            });
+            responseArray.push(newRow);
+        } else if (row[TYPE_COL_NAME] === TITLE_TYPE_NAME) {
+            resultObject[TITLE_TYPE_NAME] = row[NAME_COL_NAME];
+        }
+    });
+    resultObject[REQUEST_TYPE_NAME] = requestArray;
+    resultObject[RESPONSE_TYPE_NAME] = responseArray;
+    resultObject[DESCRIPTION_TYPE_NAME] = descriptionArray;
+    return resultObject;
+
+}
+
 var convertToUtf8 = function(str) {
     var str_array = str.split('');//1文字ずつ配列に入れる
     var utf8Array = Encoding.convert(str_array, 'UTF8', 'AUTO');//UTF-8に変換
@@ -98,7 +148,8 @@ var execSyncAjax = function(url) {
       url : url,
       type : "GET",
       timeout : 10000,
-      async : false
+      async : false,
+      cache : false
   }).responseText;
   return process;
 };

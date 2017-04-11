@@ -1,6 +1,7 @@
-ReqRes,name,type,need,description,adjust
-Request,exportorderid,int,1,è¼¸å‡ºid,
-Request,param,array,1,é…åˆ—,
-Response,code,string,1,çµæžœã‚³ãƒ¼ãƒ‰s,
-Response,message,string,1,ãƒ¬ã‚¹ãƒãƒ³ã‚¹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸,
+Type,name,type,need,description,adjust
+Request,exportorderid,int,1,—Aoid,
+Request,param,array,1,”z—ñ,
+Response,code,string,1,Œ‹‰ÊƒR[ƒhs,
+Response,message,string,1,ƒŒƒXƒ|ƒ“ƒXƒƒbƒZ[ƒW,
 Response,accessTime,string,1,yyyy/mm/dd hh:ii:ss,
+Title,TEST,,,,

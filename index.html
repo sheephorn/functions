@@ -9,15 +9,15 @@
             <h1>FunctionList</h1>
             <hr>
         </div>
-        <div id="mainbody">
+        <div id="mainbody" v-show="show">
             <ul  id="contents">list
                 <li v-for="(content, index) in contents">{{ content.name}}
                     <function-button :path="content.path" :functionname="content.function"></function-button>
                 </li>
             </ul>
         </div>
-        <div id="functionbody" style="display:none;">
-            <h2></h2>
+        <div id="functionbody" v-show="show">
+            <h2>{{ functionName }}</h2>
             <div class="params-table">
                 <table>
                     <thead>
@@ -26,7 +26,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for:"param in params">
+                        <tr v-for="params in requestParams" class="row-request">
+                            <td v-for="(col, index) in params">{{ col }}</td>
+                        </tr>
+                        <tr v-for="params in resuponseParams" class="row-response">
                             <td v-for="(col, index) in params">{{ col }}</td>
                         </tr>
                     </tbody>
@@ -44,6 +47,9 @@
     <script src="js/encoding.min.js"></script>
     <script src="js/common.js"></script>
     <script>
+    /**
+     * 関数ボタン　コンポーネント登録
+     */
     var functionButton = Vue.extend({
         props : ['path', 'functionname'],
         template : '<button type="button" class="call" @click="echo">{{ functionname }}</button>',
@@ -53,21 +59,37 @@
                 if (csv) {
                     // 書き換え処理
                     functionBody.paramHeaders = getParamHeaderContents(csv[0]);
+                    functionData = getFunctionDetail(csv);
+                    functionBody.requestParams = functionData[REQUEST_TYPE_NAME];
+                    functionBody.resuponseParams = functionData[RESPONSE_TYPE_NAME];
+                    functionBody.functionName = functionData[TITLE_TYPE_NAME];
+                    functionBody.show = !functionBody.show;
+                    contents.show = !contents.show;
                 }
             }
         }
     });
+    /**
+     * 関数詳細　Vueオブジェクト
+     */
     var functionBody = new Vue({
-        el : '#content-body',
+        el : '#functionbody',
         data : {
             paramHeaders : [],
-            params : [],
+            resuponseParams : [],
+            requestParams : [],
+            show : false,
+            functionName : 'not yet'
         }
     });
+    /**
+     * 本体リスト　Vueオブジェクト
+     */
     var contents = new Vue({
-        el : '#contents',
+        el : '#mainbody',
         data : {
-            contents : ''
+            contents : '',
+            show : true
         },
         created : function(){
             csvData = execSyncAjax('csv/functions.csv')
@@ -77,18 +99,10 @@
             'function-button' : functionButton
         }
     })
-        // $("button.call").on('click', function(){
-        //     $("#mainbody, #functionbody").toggle();
-        //     $("#content-body").load(app.callName);
-        // });
-        // $("button.back").on('click', function(){
-        //     $("#mainbody, #functionbody").toggle();
-        //     $("#content-body").empty();
-        // });
-
-
-        var header = [];
-
+    $("button.back").on("click", function(){
+        functionBody.show = !functionBody.show;
+        contents.show = !contents.show;
+    });
     </script>
 </body>
 </html>
