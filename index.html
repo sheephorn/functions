@@ -1,100 +1,147 @@
 <!DOCTYPE html>
 <html>
-<meta charset="utf-8">
-<title>FunctionList</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<header>
-    <!-- css -->
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/common.css">
-</header>
-<body>
-    <div id="wrapper">
-        <div id="header">
-            <h1>FunctionList</h1>
-            <hr>
-        </div>
-        <div id="mainbody" v-show="show" style="display:none;">
-            <table class="table table-condensed">
-                <thead>
-                    <tr>
-                        <td>Detail</td>
-                        <td>FunctionID</td>
-                        <td>Category1</td>
-                        <td>Category2</td>
-                        <td>Description</td>
-                        <td>URL</td>
-                        <td>WebControlelr</td>
-                        <td>AplController</td>
-                        <td>View</td>
-                        <td>JS</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><input type="text" v-model="filterId"><br><button type="button" @click="clearFilter('filterId')">clear</button></td>
-                        <td><input type="text" v-model="filterCategory1"><br><button type="button" @click="clearFilter('filterCategory1')">clear</button></td>
-                        <td><input type="text" v-model="filterCategory2"><br><button type="button" @click="clearFilter('filterCategory2')">clear</button></td>
-                        <td><input type="text" v-model="filterDescription"><br><button type="button" @click="clearFilter('filterDescription')">clear</button></td>
-                        <td><input type="text" v-model="filterUrl"><br><button type="button" @click="clearFilter('filterUrl')">clear</button></td>
-                        <td><input type="text" v-model="filterWebController"><br><button type="button" @click="clearFilter('filterWebController')">clear</button></td>
-                        <td><input type="text" v-model="filterAplController"><br><button type="button" @click="clearFilter('filterAplController')">clear</button></td>
-                        <td><input type="text" v-model="filterView"><br><button type="button" @click="clearFilter('filterView')">clear</button></td>
-                        <td><input type="text" v-model="filterJs"><br><button type="button" @click="clearFilter('filterJs')">clear</button></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(content, index) in filteredContents">
-                        <td v-if="content.csvpath !== ''"><function-button :path="content.csvpath" :functionname="content.function"></function-button></td>
-                        <td v-else><button class="btn btn-default disabled">Detail</button></td>
-                        <td>{{ content.id }}</td>
-                        <td>{{ content.category1 }}</td>
-                        <td>{{ content.category2 }}</td>
-                        <td>{{ content.description }}</td>
-                        <td>{{ content.url }}</td>
-                        <td>{{ content.webcontroller }}</td>
-                        <td>{{ content.aplcontroller }}</td>
-                        <td>{{ content.view }}</td>
-                        <td>{{ content.js }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div id="functionbody" v-show="show" style="display:none;">
-            <button type="button" class="btn btn-primary back">Back</button>
-            <h2>{{ functionName }}</h2>
-            <div class="params-table">
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <td v-for="paramHeader in paramHeaders">{{ paramHeader }}</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="params in requestParams" class="row-request success">
-                            <td v-for="(col, index) in params">{{ col }}</td>
-                        </tr>
-                        <tr v-for="params in resuponseParams" class="row-response info">
-                            <td v-for="(col, index) in params">{{ col }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <meta charset="utf-8">
+    <title>FunctionList</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <header>
+        <!-- css -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+    </header>
+    <body>
+        <div id="wrapper">
+            <div id="header">
+                <h1>FunctionList</h1>
+                <hr>
             </div>
-            <hr>
-            <div class="description">
-                <span v-for="description in descriptions" :class="description.class">{{ description.description }}<br></span>
+                <div id="mainbody" v-show="show" style="display:none;">
+                    <div class="container">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <td>Detail</td>
+                                <td>FunctionID</td>
+                                <td>Category1</td>
+                                <td>Category2</td>
+                                <td>Description</td>
+                                <td>URL</td>
+                                <td>WebControlelr</td>
+                                <td>AplController</td>
+                                <td>View</td>
+                                <td>JS</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input type="text" v-model="filterId">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterId')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterCategory1">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterCategory1')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterCategory2">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterCategory2')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterDescription">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterDescription')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterUrl">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterUrl')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterWebController">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterWebController')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterAplController">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterAplController')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterView">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterView')">clear</button>
+                                </td>
+                                <td>
+                                    <input type="text" v-model="filterJs">
+                                    <br>
+                                    <button type="button" @click="clearFilter('filterJs')">clear</button>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(content, index) in filteredContents">
+                                <td v-if="content.csvpath !== ''">
+                                    <function-button :path="content.csvpath" :functionname="content.function"></function-button>
+                                </td>
+                                <td v-else>
+                                    <button class="btn btn-default disabled">Detail</button>
+                                </td>
+                                <td>{{ content.id }}</td>
+                                <td>{{ content.category1 }}</td>
+                                <td>{{ content.category2 }}</td>
+                                <td>{{ content.description }}</td>
+                                <td>{{ content.url }}</td>
+                                <td>{{ content.webcontroller }}</td>
+                                <td>{{ content.aplcontroller }}</td>
+                                <td>{{ content.view }}</td>
+                                <td>{{ content.js }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div>
-                <div id="content-body">
+                <div id="functionbody" v-show="show" style="display:none;">
+                    <div class="container">
+                    <button type="button" class="btn btn-primary back">Back</button>
+                    <h2>{{ functionName }}</h2>
+                    <div class="params-table">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td v-for="paramHeader in paramHeaders">{{ paramHeader }}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="params in requestParams" class="row-request success">
+                                    <td v-for="(col, index) in params">{{ col }}</td>
+                                </tr>
+                                <tr v-for="params in resuponseParams" class="row-response info">
+                                    <td v-for="(col, index) in params">{{ col }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="description">
+                        <div class="row">
+                            <description-row v-for="description in descriptions" :description="description.description" :description2="description.description2" :classname="description.class">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="content-body"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="js/jquery-3.2.0.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="js/vue.js"></script>
-    <script src="js/addclear.min.js"></script>
-    <script src="js/common.js"></script>
-    <script>
+        <script src="js/jquery-3.2.0.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script src="js/vue.js"></script>
+        <script src="js/addclear.min.js"></script>
+        <script src="js/common.js"></script>
+        <script>
+
+        console.log(window.innerWidth);
     /**
      * 関数ボタン　コンポーネント登録
      */
@@ -119,6 +166,14 @@
         }
     });
     /**
+     * Description　コンポーネント登録
+     */
+    var descriptionRow = Vue.extend({
+        props : ['description', 'description2', 'classname'],
+        template : '<span v-if="description" class="col-md-12 " :class="classname">{{ description }}<br></span>'+
+                    '<span v-else-if="description2" class="col-md-11 col-md-offset-1">{{ description2 }}<br></span>',
+    });
+    /**
      * 関数詳細　Vueオブジェクト
      */
     var functionBody = new Vue({
@@ -130,6 +185,9 @@
             descriptions : [],
             show : false,
             functionName : 'not yet'
+        },
+        components : {
+            'description-row' : descriptionRow
         }
     });
     /**
@@ -216,5 +274,5 @@
         contents.show = !contents.show;
     });
     </script>
-</body>
+    </body>
 </html>

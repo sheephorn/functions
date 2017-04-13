@@ -6,6 +6,7 @@ const TYPE_COL_NAME = 'Type'
 const NAME_COL_NAME = 'name';
 const CLASS_COL_NAME = 'class';
 const DESCRIPTION_COL_NAME = 'description';
+const DESCRIPTION2_COL_NAME = 'description2';
 const REQUEST_TYPE_NAME = 'Request';
 const RESPONSE_TYPE_NAME = 'Response';
 const TITLE_TYPE_NAME = 'Title';
@@ -98,6 +99,7 @@ var getFunctionDetail = function(csvData) {
         } else if (row[TYPE_COL_NAME] === DESCRIPTION_TYPE_NAME) {
             var newRow = {};
             newRow[DESCRIPTION_COL_NAME] = row[DESCRIPTION_COL_NAME];
+            newRow[DESCRIPTION2_COL_NAME] = row[DESCRIPTION2_COL_NAME];
             newRow[CLASS_COL_NAME] = row[CLASS_COL_NAME];
             descriptionArray.push(newRow);
         }

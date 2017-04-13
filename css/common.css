@@ -25,3 +25,9 @@ div.params-table table thead {
     font-size: 1.5em;
     font-weight: bold;
 }
+#functionbody div.container {
+    width: 100%;
+}
+#mainbody div.container {
+    width: 100%;
+}
