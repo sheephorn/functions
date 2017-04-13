@@ -12,6 +12,12 @@ const RESPONSE_TYPE_NAME = 'Response';
 const TITLE_TYPE_NAME = 'Title';
 const DESCRIPTION_TYPE_NAME = 'Description';
 
+/**
+ * 与えられたオブジェクトにkeyがあるか判定する
+ * @param  Object array 検索先のオブジェクト
+ * @param  String param 検索対象のkey
+ * @return Boolean         判定結果
+ */
 var inArray = function(array, param) {
     return (array[param] !== undefined) ? true : false;
 };
@@ -71,6 +77,7 @@ var getFunctionDetail = function(csvData) {
 
     $.each(csvData, function(idx, row){
         if (row[TYPE_COL_NAME] === REQUEST_TYPE_NAME) {
+            // HTTPリクエストの抽出
             var newRow = {};
             var count = 0;
             $.each(row, function(key, col){
@@ -83,6 +90,7 @@ var getFunctionDetail = function(csvData) {
             });
             requestArray.push(newRow);
         } else if (row[TYPE_COL_NAME] === RESPONSE_TYPE_NAME) {
+            // HTTPレスポンスの抽出
             var newRow = {};
             var count = 0;
             $.each(row, function(key, col){
@@ -95,8 +103,10 @@ var getFunctionDetail = function(csvData) {
             });
             responseArray.push(newRow);
         } else if (row[TYPE_COL_NAME] === TITLE_TYPE_NAME) {
+            // 関数名の抽出
             resultObject[TITLE_TYPE_NAME] = row[NAME_COL_NAME];
         } else if (row[TYPE_COL_NAME] === DESCRIPTION_TYPE_NAME) {
+            // Descriptionの抽出
             var newRow = {};
             newRow[DESCRIPTION_COL_NAME] = row[DESCRIPTION_COL_NAME];
             newRow[DESCRIPTION2_COL_NAME] = row[DESCRIPTION2_COL_NAME];
@@ -107,7 +117,6 @@ var getFunctionDetail = function(csvData) {
     resultObject[REQUEST_TYPE_NAME] = requestArray;
     resultObject[RESPONSE_TYPE_NAME] = responseArray;
     resultObject[DESCRIPTION_TYPE_NAME] = descriptionArray;
-    console.log(descriptionArray)
     return resultObject;
 
 }
