@@ -3,9 +3,9 @@
  */
 var functionButton = Vue.extend({
     props : ['path'],
-    template : '<button type="button" class="btn btn-primary" @click="echo">Detail</button>',
+    template : '<button type="button" class="btn btn-primary" @click="showDetail">Detail</button>',
     methods : {
-        echo : function(){
+        showDetail : function(){
             var csv = convertCsvToObject(execSyncAjax(this.path));
             if (csv) {
                 // 書き換え処理
@@ -17,6 +17,7 @@ var functionButton = Vue.extend({
                 functionBody.descriptions = functionData[DESCRIPTION_TYPE_NAME];
                 functionBody.show = !functionBody.show;
                 contents.show = !contents.show;
+                window.scrollTo(0,0);
             }
         }
     }
