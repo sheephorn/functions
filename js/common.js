@@ -18,7 +18,7 @@ const DESCRIPTION_TYPE_NAME = 'Description';
  * @param  String param 検索対象のkey
  * @return Boolean         判定結果
  */
-var inArray = function(array, param) {
+var inObject = function(array, param) {
     return (array[param] !== undefined) ? true : false;
 };
 
@@ -54,7 +54,7 @@ var getParamHeaderContents = function(csvData) {
     var resultArray = [];
     var count = 0;
     $.each(csvData, function(key, col){
-        if (inArray(VALID_PARAMS_NUMBERS, count)) {
+        if (inObject(VALID_PARAMS_NUMBERS, count)) {
             resultArray.push(key);
         } else {
             //
@@ -81,7 +81,7 @@ var getFunctionDetail = function(csvData) {
             var newRow = {};
             var count = 0;
             $.each(row, function(key, col){
-                if (inArray(VALID_PARAMS_NUMBERS, count)) {
+                if (inObject(VALID_PARAMS_NUMBERS, count)) {
                     newRow[key] = col;
                 } else {
                     //
@@ -94,7 +94,7 @@ var getFunctionDetail = function(csvData) {
             var newRow = {};
             var count = 0;
             $.each(row, function(key, col){
-                if (inArray(VALID_PARAMS_NUMBERS, count)) {
+                if (inObject(VALID_PARAMS_NUMBERS, count)) {
                     newRow[key] = col;
                 } else {
                     //
