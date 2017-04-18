@@ -1,5 +1,5 @@
 <?php
-
+echo "\n";
 // ディレクトリのパスを記述
 	$dirs = [
         'C:\xampp\htdocs\functions\csv',
@@ -20,11 +20,22 @@
                     $path ファイルのパス
 
                     ********************/
-                    echo "\n" ;
-                    $command = 'nkf32.exe -w --overwrite ' . $path;
-                    echo $command;
-                    exec($command);
+					$data = file_get_contents($path);
+					$encode = mb_detect_encoding($data);
+					echo $encode. ' ' .$path . "\n";
+					if ($encode !== 'UTF-8') {
+						echo "convert \n";
+						$data = mb_convert_encoding($data, 'UTF-8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS');
+						file_put_contents($path, $data);
+					} else {
+						//
+					}
+                    // $command = 'nkf32.exe -w --overwrite ' . $path;
+                    // echo $command;
+					// echo "\n";
+                    // exec($command);
                 }
             }
         }
     }
+	echo "\n";

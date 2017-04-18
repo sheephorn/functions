@@ -6,6 +6,7 @@ var functionButton = Vue.extend({
     template : '<button type="button" class="btn btn-primary" @click="showDetail">Detail</button>',
     methods : {
         showDetail : function(){
+
             var csv = convertCsvToObject(execSyncAjax(this.path));
             if (csv) {
                 // 書き換え処理
@@ -67,6 +68,7 @@ var contents = new Vue({
         filterJs : '',
     },
     created : function(){
+        convertCsvEncordingToUtf8();
         var csv = convertCsvToObject(execSyncAjax('csv/functions.csv'));
         this.contents = csv;
         this.filteredContents = csv;

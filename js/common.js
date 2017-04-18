@@ -164,3 +164,11 @@ var execSyncAjax = function(url) {
   }).responseText;
   return process;
 };
+
+/**
+ * CSVファイルをUTF8に変換する
+ */
+var convertCsvEncordingToUtf8 = function() {
+    let url = 'convert2utf8.php';
+    execSyncAjax(url)
+};
